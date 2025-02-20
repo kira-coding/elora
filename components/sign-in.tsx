@@ -1,36 +1,28 @@
 "use client"
 import { useState } from "react";
-import { Loader2, Key } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
-
-
-
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false)
   const [rememberMe, setRememberMe] = useState(false);
-
   async function signin() {
-
-    await signIn.email({
-      email, password, callbackURL: "/dashboard", fetchOptions: {
+     await signIn.email({
+      email, password, callbackURL: "/dashboard", rememberMe, fetchOptions: {
         onRequest: () => {
           setLoading(true)
         },
         onSuccess: () => {
           setLoading(false)
         },
-        onError:()=>{
-          setError(true)
-          toast("error occured")
+        onError: (err) => {
+          toast(err.error.message)
           setLoading(false)
         }
       }
     });
-
   }
   return (
     <>

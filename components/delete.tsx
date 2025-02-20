@@ -1,19 +1,19 @@
 'use client'
 import axios from 'axios'
 import { Trash2 } from 'lucide-react'
-import React, { useEffect } from 'react'
-import { createFetch } from "@better-fetch/fetch";
-import { redirect, useRouter } from 'next/navigation';
+import React  from 'react'
+
+import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 import { toast } from 'sonner';
 
 function Delete({ userId }: { userId: string }) {
-  let {data,isPending}=authClient.useSession()
-  let router = useRouter()
+  const {data,isPending}=authClient.useSession()
+  const router = useRouter()
   return (
     <button onClick={async () => {
 
-      let result = await axios.delete("/api/users/" + userId)
+      const result = await axios.delete("/api/users/" + userId)
       if (result.data.deleted) {
         
         if(data!.user.id==userId&&!isPending){

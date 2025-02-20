@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 
 // Helper function to recursively gather all descendant category IDs (including the parent)
@@ -22,13 +22,12 @@ async function getAllCategoryIdsToDelete(categoryId: string) {
   return ids;
 }
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function POST(request:NextRequest) {
+  const { id } = await request.json();
 
   try {
     // Retrieve all category IDs to be deleted (the parent and its entire subtree)
     const categoryIds = await getAllCategoryIdsToDelete(id);
-
     // Delete associated TGAccounts and then the categories in a transaction
     await prisma.$transaction([
       prisma.tGAccount.deleteMany({

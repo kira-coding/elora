@@ -1,11 +1,9 @@
 'use client';
 import axios from "axios";
-import { set } from "better-auth";
 import { FolderClosed, FolderPlus, Pencil, PencilLine, Trash2, UserPlus, UserRound } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
-import { json } from "stream/consumers";
+import {  useState } from "react";
+
 
 export interface Category {
   id: string;
@@ -16,22 +14,24 @@ export interface Category {
 }
 
 export default function CategoryItem({ category }: { category: Category }) {
-  let [folderId, setFolderId] = useState("");
-  let [folderName, setFolderName] = useState("");
-  let [accountId, setAccountId] = useState("");
-  let [accountName, setAccountName] = useState("");
-  let [accountUserName, setAccountUserName] = useState("");
-  let [parentId, setParentId] = useState("");
+  const [folderId, setFolderId] = useState("");
+  const [folderName, setFolderName] = useState("");
+  const [accountId, setAccountId] = useState("");
+  const [accountName, setAccountName] = useState("");
+  const [accountUserName, setAccountUserName] = useState("");
+
   async function createFolder() {
-    await axios.post(`/api/categories/` + folderId, {
-      name: folderName, headers: {
+    await axios.post(`/api/categories/`,
+       {
+      name: folderName,id:folderId, headers: {
         Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
     redirect("/dashboard/categories");
   }
   async function deleteFolder() {
-    await axios.post(`/api/categories/delete/` + folderId, {
+    await axios.post(`/api/categories/delete/`, {
+      id:folderId,
       headers: {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
@@ -39,8 +39,10 @@ export default function CategoryItem({ category }: { category: Category }) {
     redirect("/dashboard/categories");
   }
   async function renameFolder() {
-    await axios.patch("/api/categories/" + folderId, {
-      name: folderName, headers: {
+    await axios.patch("/api/categories/" , {
+      name: folderName,
+      id:folderId,
+       headers: {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
@@ -55,7 +57,7 @@ export default function CategoryItem({ category }: { category: Category }) {
     redirect("/dashboard/categories");
   }
   async function deleteAccount() {
-    let res =await axios.delete(`/api/tg_accounts/`, {
+    const res =await axios.delete(`/api/tg_accounts/`, {
       data: { id: accountId }, headers: {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
@@ -111,9 +113,9 @@ export default function CategoryItem({ category }: { category: Category }) {
                 </button>
               </li>
               <li>
-                <button onClick={async (e) => {
+                <button onClick={async () => {
                   setFolderId(category.id);
-                  setParentId(category.parentId || "")
+
                   await deleteFolder();
 
                 }}>

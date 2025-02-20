@@ -13,7 +13,7 @@ export default async function Home() {
   
   let signup=false
   if (!(session?.user)) {
-    let users=await prisma.user.findMany({})
+    const users=await prisma.user.findMany({})
     console.dir(users)
     if(users.length<=0){
       signup=true  

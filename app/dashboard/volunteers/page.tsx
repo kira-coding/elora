@@ -4,7 +4,7 @@ import React from 'react'
 
 async function page() {
   const users = await prisma.tGAccount.findMany();
-  let Rows=  users.map((value,index)=>{return (
+  const Rows=  users.map((value,index)=>{return (
     <tr key={index} className='hover'>
     <th>{index}</th>
     <td>{value.name}</td>

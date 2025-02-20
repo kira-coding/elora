@@ -9,7 +9,7 @@ import { headers } from 'next/headers';
 
 
 export default async function Page() {
-  let session=await auth.api.getSession({headers:await headers()})
+  const session=await auth.api.getSession({headers:await headers()})
   
   // Fetch your category tree from your API endpoint.
   // The `cache: 'no-store'` option ensures that fresh data is fetched on every request.

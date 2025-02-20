@@ -2,12 +2,11 @@
 import { authClient } from '@/lib/auth-client'
 import { redirect } from 'next/navigation'
 
-import router from 'next/router'
+
 import React from 'react'
 
 function logout() {
-    async function signout(e:any) {
-        e.preventDefault()
+    async function signout() {
         await authClient.signOut({
             fetchOptions: {
               onSuccess: () => {

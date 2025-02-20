@@ -9,7 +9,7 @@ function deleteComment({ commentId }: { commentId: string }) {
 
   return (
     <button onClick={async () => {
-      let result = await axios.delete("/api/comments/" + commentId,{ headers:{Cookie: "better-auth.session_token="+localStorage.getItem("better-auth.session_token")}})
+      const result = await axios.delete("/api/comments/" + commentId,{ headers:{Cookie: "better-auth.session_token="+localStorage.getItem("better-auth.session_token")}})
       if (result.status == 200) {
         toast.success("Comment deleted")
       }

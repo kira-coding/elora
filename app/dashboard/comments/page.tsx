@@ -1,13 +1,11 @@
-import { auth } from '@/lib/auth';
+
 import prisma from '@/lib/prisma';
-import { Comment } from '@prisma/client';
-import axios from 'axios';
-import { headers } from 'next/headers';
+
 import React from 'react'
 
  async function page() {
-        let comments= await prisma.comment.findMany()
-        let cards= comments.map((value,index)=>{return (
+        const comments= await prisma.comment.findMany()
+        const cards= comments.map((value,index)=>{return (
             <div key={index} className="card bordered">
             <div className="m-4">
                 <div className="card-body">

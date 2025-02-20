@@ -5,9 +5,9 @@ import { redirect } from 'next/navigation';
 import React, { useState } from 'react'
 
 function AddCategoryItem() {
-  let [folderName, setFolderName] = useState("");
+  const [folderName, setFolderName] = useState("");
   async function createFolder() {
-    await axios.post(`/api/categories/` + 5, { name: folderName,headers:{ 
+    await axios.post(`/api/categories/` , { name: folderName,id:5,headers:{ 
       Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")}
     });
     redirect("/dashboard/categories");
