@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { signUp } from "@/lib/auth-client";
-import { toast } from "sonner";
+
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
