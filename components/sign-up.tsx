@@ -31,7 +31,7 @@ export default function SignUp() {
 					setLoading(true);
 				},
 				onError: (ctx) => {
-					toast.error(ctx.error.message);
+					console.log(ctx);
 				},
 				onSuccess: async () => {
 					router.push("/");
