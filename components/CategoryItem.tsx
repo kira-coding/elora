@@ -1,8 +1,8 @@
 'use client';
 import axios from "axios";
 import { FolderClosed, FolderPlus, Pencil, PencilLine, Trash2, UserPlus, UserRound } from "lucide-react";
-import { redirect } from "next/navigation";
-import {  useState } from "react";
+import { useRouter } from "next/navigation";
+import {   useState } from "react";
 
 
 export interface Category {
@@ -19,7 +19,7 @@ export default function CategoryItem({ category }: { category: Category }) {
   const [accountId, setAccountId] = useState("");
   const [accountName, setAccountName] = useState("");
   const [accountUserName, setAccountUserName] = useState("");
-
+  const router=useRouter();
   async function createFolder() {
     await axios.post(`/api/categories/`,
        {
@@ -27,7 +27,7 @@ export default function CategoryItem({ category }: { category: Category }) {
         Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
-    redirect("/dashboard/categories");
+    router.push("/dashboard/categories");
   }
   async function deleteFolder() {
     await axios.post(`/api/categories/delete/`, {
@@ -36,7 +36,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
-    redirect("/dashboard/categories");
+    router.push("/dashboard/categories");
   }
   async function renameFolder() {
     await axios.patch("/api/categories/" , {
@@ -46,7 +46,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
-    redirect("/dashboard/categories");
+    router.push("/dashboard/categories");
    }
   async function addAccount() {
     await axios.post(`/api/tg_accounts/`, {
@@ -54,7 +54,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       }, display_name: accountName, username: accountUserName
     });
-    redirect("/dashboard/categories");
+    router.push("/dashboard/categories");
   }
   async function deleteAccount() {
     const res =await axios.delete(`/api/tg_accounts/`, {
@@ -64,7 +64,7 @@ export default function CategoryItem({ category }: { category: Category }) {
     })
     alert(res.data.message);
     
-    redirect("/dashboard/categories");
+    router.push("/dashboard/categories");
 
   }
   async function renameAccount() {
@@ -101,7 +101,7 @@ export default function CategoryItem({ category }: { category: Category }) {
                           <div className="flex gap-2">
                             <button className="btn" onClick={() => {
                               renameFolder();
-                              redirect("/dashboard/categories");
+                              router.push("/dashboard/categories");
                             }}>save</button>
                             {/* if there is a button in form, it will close the modal */}
                             <button className="btn">Close</button></div>
@@ -139,7 +139,7 @@ export default function CategoryItem({ category }: { category: Category }) {
                           <div className="flex gap-2">
                             <button className="btn" onClick={() => {
                               createFolder();
-                              redirect("/dashboard/categories");
+                              router.push("/dashboard/categories");
                             }}>Create</button>
                             {/* if there is a button in form, it will close the modal */}
                             <button className="btn">Close</button></div>
@@ -171,7 +171,7 @@ export default function CategoryItem({ category }: { category: Category }) {
                           <div className="flex gap-2">
                             <button className="btn" onClick={() => {
                               addAccount();
-                              redirect("/dashboard/categories");
+                              router.push("/dashboard/categories");
                             }}>Add</button>
                             {/* if there is a button in form, it will close the modal */}
                             <button className="btn">Close</button></div>
@@ -229,7 +229,7 @@ export default function CategoryItem({ category }: { category: Category }) {
                                       setAccountName("");
                                       setAccountUserName("");
                                       setAccountId("");
-                                      redirect("/dashboard/categories");
+                                      router.push("/dashboard/categories");
                                     }}>save</button>
                                     {/* if there is a button in form, it will close the modal */}
                                     <button className="btn">Close</button></div>

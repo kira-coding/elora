@@ -1,16 +1,17 @@
 'use client'
 import { authClient } from '@/lib/auth-client'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 
 import React from 'react'
 
-function logout() {
+function Logout() {
+    const router = useRouter()
     async function signout() {
         await authClient.signOut({
             fetchOptions: {
               onSuccess: () => {
-                redirect("/"); // redirect to login page
+                router.push("/"); // redirect to login page
               },
             },
           })
@@ -21,4 +22,4 @@ function logout() {
   )
 }
 
-export default logout
+export default Logout

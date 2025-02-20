@@ -1,16 +1,17 @@
 "use client";
 import axios from 'axios';
 import { FolderPlus } from 'lucide-react';
-import { redirect } from 'next/navigation';
-import React, { useState } from 'react'
+import { useRouter } from 'next/navigation';
+import React, {  useState } from 'react'
 
 function AddCategoryItem() {
+  const router=useRouter();
   const [folderName, setFolderName] = useState("");
   async function createFolder() {
     await axios.post(`/api/categories/` , { name: folderName,id:5,headers:{ 
       Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")}
     });
-    redirect("/dashboard/categories");
+    router.push("/dashboard/categories");
   }
   return (
     <>
@@ -29,7 +30,7 @@ function AddCategoryItem() {
               <div className="flex gap-2">
                 <button className="btn" onClick={() => {
                   createFolder();
-                  redirect("/dashboard/categories");
+                  router.push("/dashboard/categories");
                 }}>Create</button>
                 {/* if there is a button in form, it will close the modal */}
                 <button className="btn">Close</button></div>

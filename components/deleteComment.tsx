@@ -2,11 +2,11 @@
 
 import axios from "axios";
 import { Trash2 } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-function deleteComment({ commentId }: { commentId: string }) {
-
+function DeleteComment({ commentId }: { commentId: string }) {
+  const router=useRouter();
   return (
     <button onClick={async () => {
       const result = await axios.delete("/api/comments/" + commentId,{ headers:{Cookie: "better-auth.session_token="+localStorage.getItem("better-auth.session_token")}})
@@ -16,10 +16,10 @@ function deleteComment({ commentId }: { commentId: string }) {
       else {
         toast.error("Failed to delete comment")
       }
-      redirect("/dashboard/comments")
+      router.push("/dashboard/comments")
     }}
     ><Trash2 size={20} color="#ff0000" strokeWidth={2} /></button>
   )
 }
 
-export default deleteComment
+export default DeleteComment

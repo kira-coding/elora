@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import SignIn from "@/components/sign-in";
 import SignUp from "@/components/sign-up";
 import { auth } from "@/lib/auth";

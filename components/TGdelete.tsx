@@ -3,13 +3,13 @@ import axios from 'axios'
 import { Trash2 } from 'lucide-react'
 import React from 'react'
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { toast } from 'sonner';
 
 function Delete({ accountId }: { accountId: string }) {
 
-
+    const router = useRouter();
     return (
         <button onClick={async () => {
 
@@ -20,7 +20,7 @@ function Delete({ accountId }: { accountId: string }) {
             else {
                 toast.error("Failed to delete account")
             }
-            redirect("/dashboard/volunteers")
+            router.push("/dashboard/volunteers")
 
         }}
         ><Trash2 size={20} color="#ff0000" strokeWidth={2} /></button>
