@@ -6,7 +6,7 @@ import Signupmodal from '@/components/signupmodal';
 import prisma from '@/lib/prisma';
 
 async function page() {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({});
   const Rows=  users.map((value,index)=>{return (
     <tr key={index} className='hover'>
     <th>{index}</th>

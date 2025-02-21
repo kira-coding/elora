@@ -1,11 +1,25 @@
-import { PrismaClient, Level } from '@prisma/client'
-import { withAccelerate } from '@prisma/extension-accelerate'
+import 'dotenv/config';
+import { PrismaClient } from '@prisma/client';
+import { PrismaNeon } from '@prisma/adapter-neon';
+import { Pool, neonConfig } from '@neondatabase/serverless';
 
-export const levels=Level
-const prisma = new PrismaClient().$extends(withAccelerate())
+import ws from 'ws';
+neonConfig.webSocketConstructor = ws;
 
-const globalForPrisma = global as unknown as { prisma: typeof prisma }
+// To work in edge environments (Cloudflare Workers, Vercel Edge, etc.), enable querying over fetch
+// neonConfig.poolQueryViaFetch = true
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+// Type definitions
+// declare global {
+//   var prisma: PrismaClient | undefined
+// }
 
-export default prisma
+const connectionString = `${process.env.DATABASE_URL}`;
+
+const pool = new Pool({ connectionString });
+const adapter = new PrismaNeon(pool);
+const prisma = global.prisma || new PrismaClient({ adapter });
+
+if (process.env.NODE_ENV === 'development') global.prisma = prisma;
+
+export default prisma;
