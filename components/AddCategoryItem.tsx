@@ -11,7 +11,7 @@ function AddCategoryItem() {
     await axios.post(`/api/categories/` , { name: folderName,id:5,headers:{ 
       Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")}
     });
-    router.push("/dashboard/categories");
+    router.replace("/dashboard/categories");
   }
   return (
     <>

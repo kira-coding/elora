@@ -29,7 +29,7 @@ function Delete({ userId }: { userId: string }) {
       )
       return;
     }
-    router.push("/dashboard/admins")
+    router.replace("/dashboard/admins")
       }
       await authClient.revokeOtherSessions()
     }}><Trash2 size={20} color="#ff0000" strokeWidth={2} /></button>

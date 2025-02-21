@@ -27,7 +27,7 @@ export default function CategoryItem({ category }: { category: Category }) {
         Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
-    router.refresh()
+    router.replace("/dashboard/categories")
   }
   async function deleteFolder() {
     await axios.post(`/api/categories/delete/`, {
@@ -36,7 +36,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
-    router.refresh()
+    router.replace("/dashboard/categories")
   }
   async function renameFolder() {
     await axios.patch("/api/categories/" , {
@@ -46,7 +46,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
-    router.refresh()
+    router.replace("/dashboard/categories")
    }
   async function addAccount() {
     await axios.post(`/api/tg_accounts/`, {
@@ -54,7 +54,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       }, display_name: accountName, username: accountUserName
     });
-    router.refresh()
+    router.replace("/dashboard/categories")
   }
   async function deleteAccount() {
     const res =await axios.delete(`/api/tg_accounts/`, {
@@ -64,7 +64,7 @@ export default function CategoryItem({ category }: { category: Category }) {
     })
     alert(res.data.message);
     
-    router.refresh()
+    router.replace("/dashboard/categories")
 
   }
   async function renameAccount() {
@@ -73,7 +73,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     })
-    router.refresh()
+    router.replace("/dashboard/categories")
   }
 
   return (
