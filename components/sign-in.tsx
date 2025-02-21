@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
-import { toast } from "sonner";
+
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,10 +15,6 @@ export default function SignIn() {
           setLoading(true)
         },
         onSuccess: () => {
-          setLoading(false)
-        },
-        onError: (err) => {
-          toast(err.error.message)
           setLoading(false)
         }
       }

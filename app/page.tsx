@@ -4,7 +4,7 @@ import SignUp from "@/components/sign-up";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 
 
 export default async function Home() {
@@ -16,13 +16,13 @@ export default async function Home() {
   if (!(session?.user)) {
     const users=await prisma.user.findMany({})
     console.dir(users)
-    if(users.length<=0){
+        if(users.length<=0){
       signup=true  
-  }
+        }
 
-  }else{
-    return redirect("/dashboard")
-  }
+    }else{
+    redirect("/dashboard",RedirectType.replace)
+    }
 
   return (
     <div className="hero  bg-base-200 min-h-screen">
@@ -37,7 +37,7 @@ export default async function Home() {
 
           {signup?<SignUp></SignUp>:<SignIn></SignIn>}
         </div>
-       
+
       </div>
     </div>
   );

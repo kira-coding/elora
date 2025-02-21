@@ -5,21 +5,13 @@ import React from 'react'
 
 import { useRouter } from 'next/navigation';
 
-import { toast } from 'sonner';
-
 function Delete({ accountId }: { accountId: string }) {
 
     const router = useRouter();
     return (
         <button onClick={async () => {
 
-            const result = await axios.delete("/api/tg_accounts/", { data: { id: accountId }, headers: { Cookie: "better-auth.session_token=" + localStorage.getItem("better-auth.session_token") } })
-            if (result.status == 200) {
-                toast.success("Account deleted")
-            }
-            else {
-                toast.error("Failed to delete account")
-            }
+            await axios.delete("/api/tg_accounts/", { data: { id: accountId }, headers: { Cookie: "better-auth.session_token=" + localStorage.getItem("better-auth.session_token") } })
             router.push("/dashboard/volunteers")
 
         }}

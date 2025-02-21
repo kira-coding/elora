@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { ChartColumnStacked, HandHelping, LockKeyhole, MailOpen, MessageCircle, SquareChartGantt, User } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';

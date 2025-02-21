@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     serverExternalPackages: ["@grammy"],
+    
     async headers() {
         return [
             {

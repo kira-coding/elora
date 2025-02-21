@@ -5,7 +5,6 @@ import React  from 'react'
 
 import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
-import { toast } from 'sonner';
 
 function Delete({ userId }: { userId: string }) {
   const {data,isPending}=authClient.useSession()
@@ -22,9 +21,7 @@ function Delete({ userId }: { userId: string }) {
             onSuccess: () => {
                router.push("/") // redirect to login page
             },
-            onError:(ctx)=>{
-              toast.error(ctx.error.message)
-            }
+
           },
         }
       )
