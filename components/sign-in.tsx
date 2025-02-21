@@ -16,6 +16,9 @@ export default function SignIn() {
         },
         onSuccess: () => {
           setLoading(false)
+        },
+        onError:()=>{
+          setLoading(false)
         }
       }
     });

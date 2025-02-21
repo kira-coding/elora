@@ -31,10 +31,11 @@ export default function SignUp() {
 					setLoading(true);
 				},
 				onError: (ctx) => {
-					console.log(ctx);
+					setLoading(false)
 				},
 				onSuccess: async () => {
-					router.push(".");
+					router.refresh(); 
+					setLoading(false);
 				},
 			},
 		});
