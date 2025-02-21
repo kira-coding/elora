@@ -1,40 +1,49 @@
 // app/page.jsx
-
+'use client'
 import AddCategoryItem from '@/components/AddCategoryItem';
 import CategoryItem, { Category } from '@/components/CategoryItem';
-import { auth } from '@/lib/auth';
+
+import { authClient } from '@/lib/auth-client';
 
 import axios from 'axios';
-import { headers } from 'next/headers';
+import { Loader2 } from 'lucide-react';
 
+import { useEffect, useState } from 'react';
 
-export default async function Page() {
-  const session=await auth.api.getSession({headers:await headers()})
-  
+export default function Page() {
+  const { data, isPending } = authClient.useSession()
+  let [categoryTree, setCategoryTree] = useState<Category[] | null>([]);
   // Fetch your category tree from your API endpoint.
   // The `cache: 'no-store'` option ensures that fresh data is fetched on every request.
-  const res = await axios.get('http://localhost:3000/api/categories', {
-    headers:{
-      Cookie:"better-auth.session_token="+session?.session.token
+  useEffect(() => {
+    const fetchCategories = async () => {
+      if (isPending == false) {
+        const response = await axios.get('/api/categories', {
+          headers: {
+            Cookie: 'better-auth.session_token=' + data!.session.token,
+          }
+        });
+        setCategoryTree(response.data);
+      };
     }
-  });
-  if (!res) {
-    throw new Error('Failed to fetch categories');
-  }
-  const categoryTree: Category[] = await res.data;
+    fetchCategories();
+  }, [isPending]);
 
   return (
     <>
       <div className="flex justify-end"><AddCategoryItem  ></AddCategoryItem></div>
-      {categoryTree.length > 0 &&
-       <>
-        <ul className="menu menu-x text-2xl  bg-base-200 rounded-lg w-full max-w-5xl">
+      {isPending && <div className="flex items-center justify-center h-screen"><Loader2 size={32} /></div>}
+      {!isPending && (categoryTree && categoryTree.length > 0) &&
+        <>
+          <ul className="menu menu-x text-2xl  bg-base-200 rounded-lg w-full max-w-5xl">
 
-          {categoryTree.map((category) => (
-            <CategoryItem key={category.id} category={category} />
-          ))}
-        </ul>
-      </>}
+            {categoryTree.map((category: Category) => (
+              <CategoryItem key={category.id} category={category} />
+            ))}
+          </ul>
+        </>}
+
+
     </>
   );
 }

@@ -28,9 +28,8 @@ function AddCategoryItem() {
           <div className="modal-action">
             <form method="dialog">
               <div className="flex gap-2">
-                <button className="btn" onClick={() => {
-                  createFolder();
-                  router.push("/dashboard/categories");
+                <button className="btn" onClick={async () => {
+                  await createFolder();
                 }}>Create</button>
                 {/* if there is a button in form, it will close the modal */}
                 <button className="btn">Close</button></div>

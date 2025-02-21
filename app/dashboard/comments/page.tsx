@@ -5,7 +5,7 @@ import React from 'react'
 
  async function page() {
         const comments= await prisma.comment.findMany()
-        const cards= comments.map((value,index)=>{return (
+        const cards= comments.map((value: {username:string,content:string},index:number)=>{return (
             <div key={index} className="card bordered">
             <div className="m-4">
                 <div className="card-body">

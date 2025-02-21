@@ -12,7 +12,9 @@ function Delete({ userId }: { userId: string }) {
   return (
     <button onClick={async () => {
 
-      const result = await axios.delete("/api/users/" + userId)
+      const result = await axios.delete("/api/users" ,{data:{userid:userId},headers:{
+        Cookie:"better-auth.session_token="+data!.session.token
+      }})
       if (result.data.deleted) {
         
         if(data!.user.id==userId&&!isPending){
@@ -27,7 +29,7 @@ function Delete({ userId }: { userId: string }) {
       )
       return;
     }
-
+    router.push("/dashboard/admins")
       }
       await authClient.revokeOtherSessions()
     }}><Trash2 size={20} color="#ff0000" strokeWidth={2} /></button>

@@ -27,7 +27,7 @@ export default function CategoryItem({ category }: { category: Category }) {
         Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
-    router.push("/dashboard/categories");
+    router.refresh()
   }
   async function deleteFolder() {
     await axios.post(`/api/categories/delete/`, {
@@ -36,7 +36,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
-    router.push("/dashboard/categories");
+    router.refresh()
   }
   async function renameFolder() {
     await axios.patch("/api/categories/" , {
@@ -46,7 +46,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     });
-    router.push("/dashboard/categories");
+    router.refresh()
    }
   async function addAccount() {
     await axios.post(`/api/tg_accounts/`, {
@@ -54,7 +54,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       }, display_name: accountName, username: accountUserName
     });
-    router.push("/dashboard/categories");
+    router.refresh()
   }
   async function deleteAccount() {
     const res =await axios.delete(`/api/tg_accounts/`, {
@@ -64,7 +64,7 @@ export default function CategoryItem({ category }: { category: Category }) {
     })
     alert(res.data.message);
     
-    router.push("/dashboard/categories");
+    router.refresh()
 
   }
   async function renameAccount() {
@@ -73,6 +73,7 @@ export default function CategoryItem({ category }: { category: Category }) {
          Cookie:"better-auth.session_token="+localStorage.getItem("better-auth.session_token")
       },
     })
+    router.refresh()
   }
 
   return (
@@ -101,7 +102,6 @@ export default function CategoryItem({ category }: { category: Category }) {
                           <div className="flex gap-2">
                             <button className="btn" onClick={() => {
                               renameFolder();
-                              router.push("/dashboard/categories");
                             }}>save</button>
                             {/* if there is a button in form, it will close the modal */}
                             <button className="btn">Close</button></div>
@@ -229,7 +229,7 @@ export default function CategoryItem({ category }: { category: Category }) {
                                       setAccountName("");
                                       setAccountUserName("");
                                       setAccountId("");
-                                      router.push("/dashboard/categories");
+                                     
                                     }}>save</button>
                                     {/* if there is a button in form, it will close the modal */}
                                     <button className="btn">Close</button></div>

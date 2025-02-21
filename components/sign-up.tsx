@@ -34,7 +34,7 @@ export default function SignUp() {
 					console.log(ctx);
 				},
 				onSuccess: async () => {
-					router.push("/");
+					router.push(".");
 				},
 			},
 		});
