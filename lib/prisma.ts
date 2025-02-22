@@ -6,10 +6,10 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import ws from 'ws';
 neonConfig.webSocketConstructor = ws;
 export const levels = Level;
-// To work in edge environments (Cloudflare Workers, Vercel Edge, etc.), enable querying over fetch
+// // To work in edge environments (Cloudflare Workers, Vercel Edge, etc.), enable querying over fetch
 neonConfig.poolQueryViaFetch = true
 
-// Type definitions
+// // Type definitions
 declare global {
   var prisma: PrismaClient | undefined
 }
