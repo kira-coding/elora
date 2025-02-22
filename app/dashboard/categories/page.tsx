@@ -16,7 +16,7 @@ export default async function Page() {
       <div className="flex justify-end"><AddCategoryItem  ></AddCategoryItem></div>
       {
         <>
-          <ul className="menu menu-x text-2xl  bg-base-200 rounded-lg w-full max-w-5xl">
+          <ul className="menu menu-x text-sm md:text-2xl  bg-base-200 rounded-lg w-full max-w-sm md:max-w-md">
             {categoryTree.map((category: Category) => (
               <CategoryItem key={category.id} category={category} />
             ))}
