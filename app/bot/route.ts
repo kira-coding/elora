@@ -126,7 +126,7 @@ bot.on('callback_query:data', async (ctx) => {
     if (!account) {
       return ctx.answerCallbackQuery({ text: "Account not found." })
     }
-    return ctx.answerCallbackQuery({ text: `Account: @${account.username}` })
+    return ctx.reply(`Account: @${account.username}`,{reply_parameters:{message_id:ctx.msg?.message_id||0}})
   }
 })
 
