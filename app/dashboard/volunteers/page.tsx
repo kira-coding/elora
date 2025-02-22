@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import TGdelete from '@/components/TGdelete';
 import prisma from '@/lib/prisma';
 import { TGAccount } from '@prisma/client';
