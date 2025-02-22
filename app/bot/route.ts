@@ -8,9 +8,11 @@ const token = process.env.TELEGRAM_BOT_TOKEN
 if (!token) throw new Error('TELEGRAM_BOT_TOKEN environment variable not found.')
 
 const bot = new Bot(token)
-
-// /categores command (existing functionality)
-bot.command('categores', async (ctx) => {
+bot.command('start', async (ctx) => {
+  await ctx.reply('Welcome to Elora! Use /categories to get started. use /comment to give  a comment or feedback.')
+})
+// /categories command (existing functionality)
+bot.command('categories', async (ctx) => {
   try {
     // Get all root categories (those with no parent)
     const rootCategories = await prisma.category.findMany({
@@ -33,7 +35,7 @@ bot.command('categores', async (ctx) => {
       },
     })
   } catch (error) {
-    console.error('Error in /categores command:', error)
+    console.error('Error in /categories command:', error)
     await ctx.reply("There was an error fetching categories.")
   }
 })
