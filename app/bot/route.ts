@@ -60,7 +60,6 @@ bot.command('comment', async (ctx) => {
     // Create the new comment record
     const comment = await prisma.comment.create({
       data: {
-        id: crypto.randomUUID(), // use Node's crypto to generate a unique id
         content: commentContent,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -125,7 +124,7 @@ bot.on('callback_query:data', async (ctx) => {
     if (!account) {
       return ctx.answerCallbackQuery({ text: "Account not found." })
     }
-    return ctx.answerCallbackQuery({ text: `Account: ${account.username}` })
+    return ctx.answerCallbackQuery({ text: `Account: @${account.username}` })
   }
 })
 
