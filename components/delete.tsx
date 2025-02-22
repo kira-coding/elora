@@ -1,20 +1,21 @@
 'use client'
 import axios from 'axios'
-import { Trash2 } from 'lucide-react'
+import {  Trash2 } from 'lucide-react'
 import React from 'react'
 
-import { redirect } from 'next/navigation';
+import {  useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 
 function Delete({ userId }: { userId: string }) {
   const { data, isPending } = authClient.useSession()
+  const router = useRouter()
   return (
     <button onClick={async () => {
 
       const result = await axios.delete("/api/users", {
-        data:{userid: userId}, headers: {
-          Cookie: "better-auth.session_token=" + data!.session.token
-        }
+        data:{userid: userId},headers: {
+          Cookie: "better-auth.session_token=" + localStorage.getItem("better-auth.session_token")
+        },
       })
       if (result.data.deleted) {
 
@@ -22,7 +23,7 @@ function Delete({ userId }: { userId: string }) {
           await authClient.signOut({
             fetchOptions: {
               onSuccess: () => {
-                redirect("/") // redirect to login page
+                router.push("/")
               },
 
             },
@@ -30,8 +31,8 @@ function Delete({ userId }: { userId: string }) {
           )
           return;
         }
-        // router.push("/dashboard/admins")
-        redirect("/dashboard/admins")
+        router.push("/dashboard/admins")
+
       }
       await authClient.revokeOtherSessions()
     }}><Trash2 size={20} color="#ff0000" strokeWidth={2} /></button>

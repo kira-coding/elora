@@ -1,4 +1,4 @@
-
+export const dynamic = 'force-dynamic';
 import Delete from '@/components/delete';
 
 import React from 'react'
