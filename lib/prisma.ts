@@ -1,15 +1,15 @@
 import 'dotenv/config';
-import { PrismaClient,Level} from '@prisma/client';
+import { PrismaClient ,Level} from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { Pool, neonConfig } from '@neondatabase/serverless';
-
+export const levels = Level;
 import ws from 'ws';
 neonConfig.webSocketConstructor = ws;
-export const levels = Level;
-// // To work in edge environments (Cloudflare Workers, Vercel Edge, etc.), enable querying over fetch
+
+// To work in edge environments (Cloudflare Workers, Vercel Edge, etc.), enable querying over fetch
 neonConfig.poolQueryViaFetch = true
 
-// // Type definitions
+// Type definitions
 declare global {
   var prisma: PrismaClient | undefined
 }
