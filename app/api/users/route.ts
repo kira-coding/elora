@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma"
 import { NextRequest } from "next/server"
 
-export async function DELETE(request: NextRequest) {
+export async function POST(request: NextRequest) {
     try {
         const { data:{userid} } = await request.json()
         const user = await prisma.user.delete({ where: { id: userid } })
