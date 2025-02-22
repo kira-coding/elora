@@ -26,7 +26,6 @@ export async function GET() {
                 tgAccounts: true,
             },
         });
-
         // Build the tree structure from the flat list.
         const categoryTree = buildCategoryTree(categories);
 

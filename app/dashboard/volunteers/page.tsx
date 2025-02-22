@@ -5,15 +5,17 @@ import React from 'react'
 
 async function page() {
   const users = await prisma.tGAccount.findMany();
-  const Rows=  users.map((value:TGAccount,index:number)=>{return (
-    <tr key={index} className='hover'>
-    <th>{index}</th>
-    <td>{value.name}</td>
-    <td>{value.username}</td>
-    <td><TGdelete accountId={value.id}></TGdelete></td>
-  </tr>
+  const Rows = users.map((value: TGAccount, index: number) => {
+    return (
+      <tr key={index} className='hover'>
+        <th>{index}</th>
+        <td>{value.name}</td>
+        <td>{value.username}</td>
+        <td><TGdelete accountId={value.id}></TGdelete></td>
+      </tr>
 
-  )})
+    )
+  })
   return (
 
     <div className="overflow-x-auto">

@@ -7,7 +7,7 @@ import prisma from '@/lib/prisma';
 import { User } from '@prisma/client';
 
 async function page() {
-  const users = await prisma.user.findMany({});
+  const users = await prisma.user.findMany();
   const Rows=  users.map((value:User,index:number)=>{return (
     <tr key={index} className='hover'>
     <th>{index}</th>

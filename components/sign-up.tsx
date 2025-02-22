@@ -23,19 +23,20 @@ export default function SignUp() {
 			name: `${firstName} ${lastName}`,
 			image: "",
 			fetchOptions: {
-				
+
 				onResponse: () => {
 					setLoading(false);
 				},
 				onRequest: () => {
 					setLoading(true);
 				},
-				onError: (ctx) => {
+				onError: () => {
 					setLoading(false)
 				},
 				onSuccess: async () => {
-					router.refresh(); 
+
 					setLoading(false);
+					router.push("/dashboard/admins");
 				},
 			},
 		});
@@ -89,7 +90,7 @@ export default function SignUp() {
 					<label className="label">
 						<span className="label-text">Confirm Password</span>
 					</label>
-					<input type="password" 
+					<input type="password"
 						value={passwordConfirmation}
 						onChange={(e) => setPasswordConfirmation(e.target.value)} id="confirmPassword" placeholder="type your password again" className="input input-bordered" required />
 
