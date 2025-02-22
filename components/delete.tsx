@@ -5,9 +5,10 @@ import React from 'react'
 
 import {  useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
+import { User } from 'better-auth';
 
-function Delete({ userId }: { userId: string }) {
-  const { data, isPending } = authClient.useSession()
+function Delete({ userId ,current}: { userId: string ,current:User|undefined}) {
+
   const router = useRouter()
   return (
     <button onClick={async () => {
@@ -19,7 +20,7 @@ function Delete({ userId }: { userId: string }) {
       })
       if (result.data.deleted) {
 
-        if (data!.user.id == userId && !isPending) {
+        if (current!.id== userId ) {
           await authClient.signOut({
             fetchOptions: {
               onSuccess: () => {
