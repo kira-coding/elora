@@ -104,7 +104,7 @@ bot.on('callback_query:data', async (ctx) => {
 
     // If there are children categories, add a header with folder icon and group buttons (2 per row).
     if (category.children && category.children.length > 0) {
-      keyboard.add({ text: '📁 Children:', callback_data: 'ignore' }).row();
+      keyboard.add({ text: '📁 Sub CaChildrentegories:', callback_data: 'ignore' }).row();
       const groupSize = 2;
       for (let i = 0; i < category.children.length; i += groupSize) {
         const rowButtons = category.children
