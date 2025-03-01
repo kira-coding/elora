@@ -78,7 +78,7 @@ bot.command('comment', async (ctx) => {
 
 // Callback query handler for categories, accounts, etc.
 bot.on('callback_query:data', async (ctx) => {
-  const data = ctx.callbackQuery?.data || '';
+  const data = ctx.callbackQuery.data || '';
 
   // Ignore dummy header button taps.
   if (data === 'ignore') {
@@ -110,7 +110,7 @@ bot.on('callback_query:data', async (ctx) => {
         const rowButtons = category.children
           .slice(i, i + groupSize)
           .map(child => ({
-            text: child.name,
+            text:"🗂 " +child.name,
             callback_data: `category|${child.id}`,
           }));
         keyboard.row(...rowButtons);
@@ -119,13 +119,12 @@ bot.on('callback_query:data', async (ctx) => {
 
     // If there are volunteer accounts, add a header with user icon and group their buttons (2 per row).
     if (category.tgAccounts && category.tgAccounts.length > 0) {
-      keyboard.add({ text: '👤 Volunteers:', callback_data: 'ignore' }).row();
-      const groupSize = 3;
+      const groupSize = 2;
       for (let i = 0; i < category.tgAccounts.length; i += groupSize) {
         const rowButtons = category.tgAccounts
           .slice(i, i + groupSize)
           .map(account => ({
-            text: account.username,
+            text: "👤 "+account.username,
             callback_data: `account|${account.id}`,
           }));
         keyboard.row(...rowButtons);
