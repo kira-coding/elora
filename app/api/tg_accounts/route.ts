@@ -2,8 +2,8 @@ import prisma from "@/lib/prisma"
 
 export async function POST(request: Request) {
     try {
-        const { username, id, display_name } = await request.json()
-        await prisma.category.update({ where: { id }, data: { tgAccounts: { create: { name: display_name, username } } } })
+        const { username, id, display_name,description } = await request.json()
+        await prisma.category.update({ where: { id }, data: { tgAccounts: { create: { name: display_name, username,description } } } })
         return Response.json({success:true})
     }
     catch (err) {
@@ -22,8 +22,8 @@ export async function DELETE(request: Request) {
 }
 export async function PATCH(request: Request, ) {
     try {
-        const { username, id, display_name } = await request.json()
-        await prisma.tGAccount.update({ where: { id }, data: { username: username, name: display_name } })
+        const { username, id, display_name ,description} = await request.json()
+        await prisma.tGAccount.update({ where: { id }, data: { username: username, name: display_name,description } })
         return Response.json({ success: true })
     }
     catch (err) {

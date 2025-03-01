@@ -17,6 +17,7 @@ model Category {
   id         String      @id @default(cuid())
   name       String
   parentId   String?
+  description String?
   parent     Category?   @relation("CategoryChildren", fields: [parentId], references: [id])
   children   Category[]  @relation("CategoryChildren")
   tgAccounts TGAccount[]
@@ -27,6 +28,7 @@ model TGAccount {
   id         String   @id @default(cuid())
   name       String
   username   String
+  description String?
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 }

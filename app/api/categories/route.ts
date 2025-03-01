@@ -41,12 +41,12 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
     try {
-        const { name, id } = await request.json()
+        const { name, id ,description} = await request.json()
         let root: typeof levels.Root | typeof levels.Sub = levels.Sub
         if ((parseInt(id) == 5)) {
             root = levels.Root
         }
-        const cat = await prisma.category.create({ data: { name: name, type: root } })
+        const cat = await prisma.category.create({ data: { name: name, type: root,description } })
         if (root == levels.Sub) {
             await prisma.category.update({ where: { id: id }, data: { children: { connect: { id: cat.id } } } })
         }
@@ -59,8 +59,8 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
     try {
-        const { name, id } = await request.json()
-        await prisma.category.update({ where: { id: id }, data: { name: name } })
+        const { name, id,description } = await request.json()
+        await prisma.category.update({ where: { id: id }, data: { name: name,description } })
         return NextResponse.json({ success: true })
     }
     catch (err) {

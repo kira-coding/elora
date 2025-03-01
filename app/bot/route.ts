@@ -1,8 +1,8 @@
 export const dynamic = 'force-dynamic'
 export const fetchCache = 'force-no-store'
 
-import { Bot, webhookCallback } from 'grammy'
-import  prisma  from '@/lib/prisma' // adjust the path if needed
+import { Bot, InlineKeyboard, webhookCallback } from 'grammy'
+import prisma from '@/lib/prisma' // adjust the path if needed
 
 const token = process.env.TELEGRAM_BOT_TOKEN
 if (!token) throw new Error('TELEGRAM_BOT_TOKEN environment variable not found.')
@@ -19,16 +19,16 @@ bot.command('categories', async (ctx) => {
       where: { parentId: null },
       include: { tgAccounts: true, children: true },
     })
-    
+
     if (rootCategories.length === 0) {
       return ctx.reply("No categories available.")
     }
-    
+
     // Build an inline keyboard with one button per root category.
     const keyboard = rootCategories.map(category => [
       { text: category.name, callback_data: `category|${category.id}` }
     ])
-    
+
     await ctx.reply("Select a category:", {
       reply_markup: {
         inline_keyboard: keyboard,
@@ -48,17 +48,17 @@ bot.command('comment', async (ctx) => {
     const parts = text.split(' ')
     parts.shift() // remove the command "/comment"
     const commentContent = parts.join(' ').trim()
-    
+
     if (!commentContent) {
       return ctx.reply("Please provide a comment after the command. For example:\n\n/comment This is my comment.")
     }
-    
+
     // Get the username from the sender; fall back to first_name or "anonymous"
     const username =
       ctx.message?.from.username ||
       ctx.message?.from.first_name ||
       "anonymous"
-    
+
     // Create the new comment record
     const comment = await prisma.comment.create({
       data: {
@@ -68,7 +68,7 @@ bot.command('comment', async (ctx) => {
         username: username,
       },
     })
-    
+
     await ctx.reply(`Your comment has been added:\n\n"${comment.content}"`)
   } catch (error) {
     console.error("Error adding comment:", error)
@@ -79,7 +79,7 @@ bot.command('comment', async (ctx) => {
 // Callback query handler for categories, accounts, etc.
 bot.on('callback_query:data', async (ctx) => {
   const data = ctx.callbackQuery.data || ''
-  
+
   // Category callback: show children and TGAccounts inline
   if (data.startsWith('category|')) {
     const categoryId = data.split('|')[1]
@@ -90,33 +90,44 @@ bot.on('callback_query:data', async (ctx) => {
     if (!category) {
       return ctx.answerCallbackQuery({ text: "Category not found." })
     }
-    
-    const inlineKeyboard = []
-    
+
+    const inlineKeyboard = new InlineKeyboard()
+    const userKeyboard = new InlineKeyboard()
     if (category.children && category.children.length > 0) {
-      const subcatButtons = category.children.map(subcat => ({
-        text: subcat.name,
-        callback_data: `category|${subcat.id}`,
-      }))
-      inlineKeyboard.push(subcatButtons)
+      let counter = 0
+      category.children.forEach(subcat => {
+        inlineKeyboard.add({
+          text: subcat.name,
+          callback_data: `category|${subcat.id}`,
+        }
+        )
+        counter++
+        if (counter >= 3)
+          inlineKeyboard.row()
+      })
     }
-    
+
     if (category.tgAccounts && category.tgAccounts.length > 0) {
-      const accountButtons = category.tgAccounts.map(account => ({
-        text: account.username,
-        callback_data: `account|${account.id}`,
-      }))
-      inlineKeyboard.push(accountButtons)
+      let users = 0
+      category.tgAccounts.forEach(account => {
+        userKeyboard.add({
+          text: account.username,
+          callback_data: `account|${account.id}`,
+        })
+        users++
+        if (users > 3) {
+          userKeyboard.row()
+        }
+      })
+
     }
-    
-    await ctx.editMessageText(`Category: ${category.name}`, {
-      reply_markup: {
-        inline_keyboard: inlineKeyboard,
-      },
-    })
+
+    await ctx.reply(category.name + "\n" + category.description, { reply_markup: inlineKeyboard })
+
+    await ctx.reply("Users", { reply_markup: userKeyboard })
     return ctx.answerCallbackQuery()
   }
-  
+
   // Account callback: display account's username in a notification.
   if (data.startsWith('account|')) {
     const accountId = data.split('|')[1]
@@ -126,7 +137,7 @@ bot.on('callback_query:data', async (ctx) => {
     if (!account) {
       return ctx.answerCallbackQuery({ text: "Account not found." })
     }
-    return ctx.reply(`Account: @${account.username}`,{reply_parameters:{message_id:ctx.msg?.message_id||0}})
+    return ctx.reply(`Name: ${account.name} \n Description:${account.description}\n user name: @${account.username}`, { reply_parameters: { message_id: ctx.msg?.message_id || 0 } })
   }
 })
 
