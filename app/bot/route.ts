@@ -97,14 +97,14 @@ bot.on('callback_query:data', async (ctx) => {
 
     // Use a default message if description is null.
     const description = category.description ? category.description : "No description provided.";
-    const messageText = `*Category:*\n*Name:* ${category.name}\n*Description:* ${description}`;
+    const messageText = `*📁 ${category.name}*\n*Description:* ${description}`;
 
-    // Build a combined inline keyboard
+    // Build a combined inline keyboard.
     const keyboard = new InlineKeyboard();
 
-    // If there are children categories, add a header and group buttons (2 per row)
+    // If there are children categories, add a header with folder icon and group buttons (2 per row).
     if (category.children && category.children.length > 0) {
-      keyboard.add({ text: 'Children:', callback_data: 'ignore' }).row();
+      keyboard.add({ text: '📁 Children:', callback_data: 'ignore' }).row();
       const groupSize = 2;
       for (let i = 0; i < category.children.length; i += groupSize) {
         const rowButtons = category.children
@@ -117,9 +117,9 @@ bot.on('callback_query:data', async (ctx) => {
       }
     }
 
-    // If there are volunteer accounts, add a header and group their buttons (2 per row)
+    // If there are volunteer accounts, add a header with user icon and group their buttons (2 per row).
     if (category.tgAccounts && category.tgAccounts.length > 0) {
-      keyboard.add({ text: 'Volunteers:', callback_data: 'ignore' }).row();
+      keyboard.add({ text: '👤 Volunteers:', callback_data: 'ignore' }).row();
       const groupSize = 2;
       for (let i = 0; i < category.tgAccounts.length; i += groupSize) {
         const rowButtons = category.tgAccounts
@@ -132,7 +132,7 @@ bot.on('callback_query:data', async (ctx) => {
       }
     }
 
-    // Send a single, professional message.
+    // Send a single, professional message with the icon and grid layout.
     await ctx.reply(messageText, { parse_mode: 'Markdown', reply_markup: keyboard });
     return ctx.answerCallbackQuery();
   }
@@ -145,10 +145,11 @@ bot.on('callback_query:data', async (ctx) => {
     if (!account) {
       return ctx.answerCallbackQuery({ text: "Account not found." });
     }
-    const accountText = `*Volunteer Details:*\n*Name:* ${account.name}\n*Description:* ${account.description || 'No description provided.'}\n*Username:* @${account.username}`;
+    const accountText = `*👤 ${account.name}*\n*Description:* ${account.description || 'No description provided.'}\n*Username:* @${account.username}`;
     return ctx.reply(accountText, { parse_mode: 'Markdown' });
   }
 });
+
 
 // Fallback: echo back text messages
 bot.on('message:text', async (ctx) => {
