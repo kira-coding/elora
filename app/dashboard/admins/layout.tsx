@@ -10,7 +10,7 @@ function layout({
   return (
     <div className="flex flex-col">
     <div className="flex justify-center">
-      <ul className="menu bg-base-200 lg:menu-horizontal rounded-box">
+      <ul className="menu bg-base-200 menu-horizontal rounded-box">
         <li>
           <Link href={"/dashboard/admins"}>
           <LockKeyhole />

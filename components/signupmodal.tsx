@@ -5,9 +5,9 @@ import SignUp from './sign-up'
 
 function Signupmodal() {
     return (
-        <div>
+        <div className=' font-extrabold'>
 {/* The button to open modal */}
-<label htmlFor="my_modal_7" className="btn"><UserRoundPlus size={16} color="#dc8add" strokeWidth={1.25} /></label>
+<label htmlFor="my_modal_7" className="btn"><UserRoundPlus size={18} width={24}  className=' text-white' strokeWidth={1.25} /></label>
 
 {/* Put this part before </body> tag */}
 <input type="checkbox" id="my_modal_7" className="modal-toggle" />

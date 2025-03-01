@@ -1,7 +1,7 @@
 'use client'
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
-
+import {LogOutIcon} from 'lucide-react/icons'
 
 import React from 'react'
 
@@ -18,7 +18,7 @@ function Logout() {
     }
 
   return (
-    <a className="btn btn-ghost" onClick={signout}>Logout</a>
+    <a className="btn btn-ghost" onClick={signout}><LogOutIcon></LogOutIcon></a>
   )
 }
 

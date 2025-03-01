@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <div className="navbar bg-base-100">
+      <div className="navbar bg-base-100 ">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-accent btn-circle">
@@ -46,15 +46,16 @@ export default function RootLayout({
           </div>
         </div>
         <div className="navbar-center">
-          <Link href="/" className="btn text-purple-600 text-xl">Elora</Link>
+          <Link href="/" className="btn text-purple-600 text-sm sm:text-2xl">Elora</Link>
         </div>
-        <div className="navbar-end">
-          <Theme></Theme>
+        <div className="navbar-end p-0 text-sm sm:text-2xl ">
+
           <Logout></Logout>
+          <Theme></Theme>
         </div>
       </div>
-      <main>
-        <div className="card bg-base-100 w-full h-5/6 block shadow-xl">
+      <main className="overflow-x-clip p-0 max-w-full">
+        <div className="card bg-base-100   block shadow-xl">
           <div className="card-body">
             {children}
           </div>

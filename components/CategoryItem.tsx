@@ -1,6 +1,6 @@
 'use client';
 import axios from "axios";
-import { FolderClosed, FolderPlus, Pencil, PencilLine, Trash2, UserPlus, UserRound, AtSign } from "lucide-react";
+import { FolderClosed, FolderPlus, Pencil, PencilLine, Trash2, UserPlus, UserRound, AtSign, Menu } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -11,7 +11,7 @@ export interface Category {
   name: string;
   tgAccounts?: { id: string; name: string; username: string, description: string }[];
   subcategories?: Category[];
-  description:string
+  description: string
   parentId?: string;
 }
 
@@ -95,7 +95,7 @@ export default function CategoryItem({ category }: { category: Category }) {
             <input type="text" name="newname" value={folderName} onChange={(e) => setFolderName(e.target.value)} className="grow" placeholder="Category" />
           </label>
           <label htmlFor="description" className='mb-0 pb-0'>Description*</label>
-          <textarea className='textarea textarea-bordered' id='description' value={categoryDescription||""} onChange={(e) => setCategoryDescription(e.target.value)}>
+          <textarea className='textarea textarea-bordered' id='description' value={categoryDescription || ""} onChange={(e) => setCategoryDescription(e.target.value)}>
           </textarea>
 
           <div className="modal-action">
@@ -114,101 +114,107 @@ export default function CategoryItem({ category }: { category: Category }) {
         <summary >
           <FolderClosed color="#f5c211" strokeWidth={3} />
           {category.name}
-          <ul className="menu menu-horizontal  bg-base-100 rounded-box ">
-            <li>
-              <button onClick={() => {
-                const modal = document.getElementById("r" + category.id) as HTMLDialogElement | null;
-                setFolderId(category.id);
-                setFolderName(category.name);
-                setCategoryDescription(category.description)
-                modal?.showModal();
-              }}>
+          <div className=" dropdown  dropdown-left text-accent-content m-3 ">
+            <button tabIndex={2} role="button" className="btn btn-ghost  p-0 m-0">
+              <Menu size={24} fontWeight={"bold"} ></Menu>
 
-                <Pencil color="#9a9996" size={14} />
-              </button>
-            </li>
-            <li>
+            </button>
+            <ul  tabIndex={2} className="dropdown-content bg-base-300  rounded-box z-[4]  shadow-2xl">
+              <li>
+                <button onClick={() => {
+                  const modal = document.getElementById("r" + category.id) as HTMLDialogElement | null;
+                  setFolderId(category.id);
+                  setFolderName(category.name);
+                  setCategoryDescription(category.description)
+                  modal?.showModal();
+                }}>
 
-              <button onClick={async () => {
+                  <Pencil color="#9a9996" size={16} />
+                </button>
+              </li>
+              <li>
 
-                setFolderId(category.id)
-                await deleteFolder()
+                <button onClick={async () => {
 
-              }}>
-                <Trash2 color="#9a9996" size={14} />
-              </button>
+                  setFolderId(category.id)
+                  await deleteFolder()
 
-            </li>
-            <li>
-              <button onClick={() => {
-                const modal = document.getElementById(category.id) as HTMLDialogElement | null;
-                setFolderId(category.id);
-                modal?.showModal();
-              }}>
+                }}>
+                  <Trash2 color="#9a9996" size={16} />
+                </button>
 
-                <FolderPlus color="#9a9996" size={14} />
-              </button>
-              <dialog id={category.id} className="modal flex items-center justify-center">
-                <div className="modal-box flex flex-col gap-4 p-4 bg-secondary rounded-box">
-                  <label className="input input-bordered flex items-center gap-2">
-                    Name
-                    <input type="text" name="newname" value={folderName} onChange={(e) => setFolderName(e.target.value)} className="grow" placeholder="Category Name" />
-                  </label>
-                  <label htmlFor="description" className='mb-0 pb-0'>Description*</label>
-                  <textarea className='textarea textarea-bordered' id='description' value={categoryDescription ||""} onChange={(e) => setCategoryDescription(e.target.value)}>
-                  </textarea>
-                  <div className="modal-action">
-                    <form method="dialog">
-                      <div className="flex gap-2">
-                        <button className="btn" onClick={() => {
-                          createFolder();
-                          router.push("/dashboard/categories");
-                        }}>Create</button>
-                        {/* if there is a button in form, it will close the modal */}
-                        <button className="btn">Close</button></div>
-                    </form>
+              </li>
+              <li>
+                <button onClick={() => {
+                  const modal = document.getElementById(category.id) as HTMLDialogElement | null;
+                  setFolderId(category.id);
+                  modal?.showModal();
+                }}>
+
+                  <FolderPlus color="#9a9996" size={16} />
+                </button>
+                <dialog id={category.id} className="modal flex items-center justify-center">
+                  <div className="modal-box flex flex-col gap-4 p-4 bg-secondary rounded-box">
+                    <label className="input input-bordered flex items-center gap-2">
+                      Name
+                      <input type="text" name="newname" value={folderName} onChange={(e) => setFolderName(e.target.value)} className="grow" placeholder="Category Name" />
+                    </label>
+                    <label htmlFor="description" className='mb-0 pb-0'>Description*</label>
+                    <textarea className='textarea textarea-bordered' id='description' value={categoryDescription || ""} onChange={(e) => setCategoryDescription(e.target.value)}>
+                    </textarea>
+                    <div className="modal-action">
+                      <form method="dialog">
+                        <div className="flex gap-2">
+                          <button className="btn" onClick={() => {
+                            createFolder();
+                            router.push("/dashboard/categories");
+                          }}>Create</button>
+                          {/* if there is a button in form, it will close the modal */}
+                          <button className="btn">Close</button></div>
+                      </form>
+                    </div>
                   </div>
-                </div>
-              </dialog>
-            </li>
-            <li>
-              <button onClick={() => {
-                setFolderId(category.id);
-                const modal = document.getElementById(`user${category.id}`) as HTMLDialogElement | null;
-                modal?.showModal();
-              }}>
+                </dialog>
+              </li>
+              <li>
+                <button onClick={() => {
+                  setFolderId(category.id);
+                  const modal = document.getElementById(`user${category.id}`) as HTMLDialogElement | null;
+                  modal?.showModal();
+                }}>
 
-                <UserPlus size={16} color="#9a9996" strokeWidth={3} />
-              </button>
-              <dialog id={`user${category.id}`} className="modal flex items-center justify-center">
-                <div className="modal-box flex flex-col gap-4 p-4 bg-secondary rounded-box">
-                  <label className="input input-bordered flex items-center gap-2">
-                    Name
-                    <input type="text" name="newname" value={accountName} onChange={(e) => setAccountName(e.target.value)} className="grow" placeholder="Diplay Name. eg John" />
-                  </label>
-                  <label className="input input-bordered flex items-center gap-2">
-                    @
-                    <input type="text" name="newusername" value={accountUserName} onChange={(e) => setAccountUserName(e.target.value)} className="grow" placeholder="username" />
-                  </label>
-                  <label className="input input-bordered flex items-center gap-2">
-                    Description*
-                    <input type="text" value={accountDescription} onChange={(e) => setAccountDescription(e.target.value)} className="grow" placeholder="Optional" />
-                  </label>
-                  <div className="modal-action">
-                    <form method="dialog">
-                      <div className="flex gap-2">
-                        <button className="btn" onClick={() => {
-                          addAccount();
-                          router.push("/dashboard/categories");
-                        }}>Add</button>
-                        {/* if there is a button in form, it will close the modal */}
-                        <button className="btn">Close</button></div>
-                    </form>
+                  <UserPlus size={16} color="#9a9996" strokeWidth={3} />
+                </button>
+                <dialog id={`user${category.id}`} className="modal flex items-center justify-center">
+                  <div className="modal-box flex flex-col gap-4 p-4 bg-secondary rounded-box">
+                    <label className="input input-bordered flex items-center gap-2">
+                      Name
+                      <input type="text" name="newname" value={accountName} onChange={(e) => setAccountName(e.target.value)} className="grow" placeholder="Diplay Name. eg John" />
+                    </label>
+                    <label className="input input-bordered flex items-center gap-2">
+                      @
+                      <input type="text" name="newusername" value={accountUserName} onChange={(e) => setAccountUserName(e.target.value)} className="grow" placeholder="username" />
+                    </label>
+                    <label className="input input-bordered flex items-center gap-2">
+                      Description*
+                      <input type="text" value={accountDescription} onChange={(e) => setAccountDescription(e.target.value)} className="grow" placeholder="Optional" />
+                    </label>
+                    <div className="modal-action">
+                      <form method="dialog">
+                        <div className="flex gap-2">
+                          <button className="btn" onClick={() => {
+                            addAccount();
+                            router.push("/dashboard/categories");
+                          }}>Add</button>
+                          {/* if there is a button in form, it will close the modal */}
+                          <button className="btn">Close</button></div>
+                      </form>
+                    </div>
                   </div>
-                </div>
-              </dialog>
-            </li>
-          </ul>
+                </dialog>
+              </li>
+            </ul>
+          </div>
         </summary>
         <ul>
           {category.subcategories && category.subcategories.length > 0 && (
@@ -278,7 +284,7 @@ export default function CategoryItem({ category }: { category: Category }) {
                           await deleteAccount();
 
                         }}>
-                          <Trash2 color="#9a9996" size={14} />
+                          <Trash2 color="#9a9996" size={16} />
                         </button>
                       </li>
                     </ul>
