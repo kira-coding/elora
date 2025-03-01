@@ -78,68 +78,77 @@ bot.command('comment', async (ctx) => {
 
 // Callback query handler for categories, accounts, etc.
 bot.on('callback_query:data', async (ctx) => {
-  const data = ctx.callbackQuery.data || ''
+  const data = ctx.callbackQuery.data || '';
 
-  // Category callback: show children and TGAccounts inline
+  // Ignore dummy header button taps.
+  if (data === 'ignore') {
+    return ctx.answerCallbackQuery();
+  }
+
   if (data.startsWith('category|')) {
-    const categoryId = data.split('|')[1]
+    const categoryId = data.split('|')[1];
     const category = await prisma.category.findUnique({
       where: { id: categoryId },
       include: { children: true, tgAccounts: true },
-    })
+    });
     if (!category) {
-      return ctx.answerCallbackQuery({ text: "Category not found." })
+      return ctx.answerCallbackQuery({ text: "Category not found." });
     }
 
-    const inlineKeyboard = new InlineKeyboard()
-    const userKeyboard = new InlineKeyboard()
+    // Use a default message if description is null.
+    const description = category.description ? category.description : "No description provided.";
+    const messageText = `*Category:*\n*Name:* ${category.name}\n*Description:* ${description}`;
+
+    // Build a combined inline keyboard
+    const keyboard = new InlineKeyboard();
+
+    // If there are children categories, add a header and group buttons (2 per row)
     if (category.children && category.children.length > 0) {
-      let counter = 0
-      category.children.forEach(subcat => {
-        inlineKeyboard.add({
-          text: subcat.name,
-          callback_data: `category|${subcat.id}`,
-        }
-        )
-        counter++
-        if (counter >= 3)
-          inlineKeyboard.row()
-      })
+      keyboard.add({ text: 'Children:', callback_data: 'ignore' }).row();
+      const groupSize = 2;
+      for (let i = 0; i < category.children.length; i += groupSize) {
+        const rowButtons = category.children
+          .slice(i, i + groupSize)
+          .map(child => ({
+            text: child.name,
+            callback_data: `category|${child.id}`,
+          }));
+        keyboard.row(...rowButtons);
+      }
     }
 
+    // If there are volunteer accounts, add a header and group their buttons (2 per row)
     if (category.tgAccounts && category.tgAccounts.length > 0) {
-      let users = 0
-      category.tgAccounts.forEach(account => {
-        userKeyboard.add({
-          text: account.username,
-          callback_data: `account|${account.id}`,
-        })
-        users++
-        if (users > 3) {
-          userKeyboard.row()
-        }
-      })
-
+      keyboard.add({ text: 'Volunteers:', callback_data: 'ignore' }).row();
+      const groupSize = 2;
+      for (let i = 0; i < category.tgAccounts.length; i += groupSize) {
+        const rowButtons = category.tgAccounts
+          .slice(i, i + groupSize)
+          .map(account => ({
+            text: account.username,
+            callback_data: `account|${account.id}`,
+          }));
+        keyboard.row(...rowButtons);
+      }
     }
 
-    await ctx.reply(category.name + "\n" + category.description, { reply_markup: inlineKeyboard })
-
-    await ctx.reply("Users", { reply_markup: userKeyboard })
-    return ctx.answerCallbackQuery()
+    // Send a single, professional message.
+    await ctx.reply(messageText, { parse_mode: 'Markdown', reply_markup: keyboard });
+    return ctx.answerCallbackQuery();
   }
 
-  // Account callback: display account's username in a notification.
   if (data.startsWith('account|')) {
-    const accountId = data.split('|')[1]
+    const accountId = data.split('|')[1];
     const account = await prisma.tGAccount.findUnique({
       where: { id: accountId },
-    })
+    });
     if (!account) {
-      return ctx.answerCallbackQuery({ text: "Account not found." })
+      return ctx.answerCallbackQuery({ text: "Account not found." });
     }
-    return ctx.reply(`Name: ${account.name} \n Description:${account.description}\n user name: @${account.username}`, { reply_parameters: { message_id: ctx.msg?.message_id || 0 } })
+    const accountText = `*Volunteer Details:*\n*Name:* ${account.name}\n*Description:* ${account.description || 'No description provided.'}\n*Username:* @${account.username}`;
+    return ctx.reply(accountText, { parse_mode: 'Markdown' });
   }
-})
+});
 
 // Fallback: echo back text messages
 bot.on('message:text', async (ctx) => {
